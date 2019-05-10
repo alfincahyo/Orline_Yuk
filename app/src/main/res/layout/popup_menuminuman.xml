@@ -3,50 +3,60 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="250dp"
     android:layout_height="300dp"
-    android:background="@android:color/darker_gray"
-    android:layout_gravity="center"
-    >
+    android:layout_gravity="center">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_cancel_black_24dp"
-            android:layout_gravity="right"/>
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tambah Menu Minuman"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:textColor="@android:color/black"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/namaminuman"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName" />
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_cancel_black_24dp"
+                android:layout_gravity="right"/>
 
-        <EditText
-            android:id="@+id/hargaminuman"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tambah Menu Minuman"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"/>
 
-        <Button
-            android:layout_marginTop="15dp"
-            android:id="@+id/addmenuminum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/namaminuman"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nama Minuman"
+                android:ems="10"
+                android:layout_marginTop="15dp"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/hargaminuman"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Harga Minuman"
+                android:ems="10"
+                android:layout_marginTop="15dp"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:layout_marginTop="15dp"
+                android:id="@+id/addmenuminum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tambah"
+                android:layout_marginRight="70dp"
+                android:layout_marginLeft="70dp"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
 </android.support.v7.widget.LinearLayoutCompat>
