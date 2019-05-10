@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
@@ -23,6 +24,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private EditText email;
     private EditText pass;
     private TextView reg;
+    static String userEmail;
 
     private FirebaseAuth firebaseAuth;
 
@@ -34,9 +36,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() != null){
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            userEmail = user.getEmail();
             finish();
-            startActivity(new Intent(getApplicationContext(), MainMenuAdmin.class));
+            startActivity(new Intent(getApplicationContext(), MainMenu.class));
         }
+
+
 
         signin = (Button) findViewById(R.id.signin);
         email = (EditText) findViewById(R.id.emaillog);
@@ -69,7 +75,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             finish();
-                            startActivity(new Intent(getApplicationContext(), MainMenuAdmin.class));
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            userEmail = user.getEmail();
+                            startActivity(new Intent(getApplicationContext(), MainMenu.class));
                         }else {
                             Toast.makeText(Login.this, "Login Gagal", Toast.LENGTH_SHORT).show();
                         }
