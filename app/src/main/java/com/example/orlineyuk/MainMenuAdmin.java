@@ -3,21 +3,22 @@ package com.example.orlineyuk;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 
 public class MainMenuAdmin extends AppCompatActivity implements View.OnClickListener {
 
-    private Button MenuMakan;
-    private Button MenuMinuman;
+    private CardView MenuMakan;
+    private CardView MenuMinuman;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu_admin);
 
-        MenuMakan = (Button) findViewById(R.id.menumakan);
-        MenuMinuman = (Button) findViewById(R.id.menuminum);
+        MenuMakan = (CardView) findViewById(R.id.menumakan);
+        MenuMinuman = (CardView) findViewById(R.id.menuminum);
         MenuMakan.setOnClickListener(this);
         MenuMinuman.setOnClickListener(this);
     }
