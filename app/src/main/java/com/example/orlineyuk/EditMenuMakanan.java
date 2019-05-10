@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.orlineyuk.Adapter.AdapterMenuMakanan;
 import com.example.orlineyuk.model.MenuMakanan;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -103,12 +104,13 @@ public class EditMenuMakanan extends AppCompatActivity{
 
     public void TambahMenuMakan(){
         String nama = namaMknan.getText().toString().trim();
-        Integer harga = Integer.valueOf(hrgaMknan.getText().toString().trim());
+        String cekHarga = hrgaMknan.getText().toString().trim();
 
-        if (TextUtils.isEmpty(nama) || harga == null){
+        if (TextUtils.isEmpty(nama) || TextUtils.isEmpty(cekHarga)){
             Toast.makeText(this, "Isi Semua Form", Toast.LENGTH_LONG).show();
         }else {
             String id = databaseMakanan.push().getKey();
+            Integer harga = Integer.valueOf(hrgaMknan.getText().toString().trim());
 
             MenuMakanan menu = new MenuMakanan(id, nama, harga);
             databaseMakanan.child(id).setValue(menu);
