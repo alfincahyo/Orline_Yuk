@@ -1,4 +1,5 @@
-package com.example.orlineyuk;
+package com.example.orlineyuk.Adapter;
+
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,54 +18,56 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.orlineyuk.model.MenuMinuman;
+import com.example.orlineyuk.R;
+import com.example.orlineyuk.model.MenuMakanan;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class AdapterMenuMinuman extends RecyclerView.Adapter<AdapterMenuMinuman.myViewHolder2> {
+public class AdapterMenuMakanan extends RecyclerView.Adapter<AdapterMenuMakanan.myViewHolder> {
 
     Context context;
-    ArrayList<MenuMinuman> menuMinuman;
+    ArrayList<MenuMakanan> menuMakanans;
 
     private Button updatemenu;
     private Button deletemenu;
-    private EditText NamaMinum;
-    private EditText HargaMinum;
+    private EditText namaMknan;
+    private EditText hrgaMknan;
 
-    public AdapterMenuMinuman(Context c, ArrayList<MenuMinuman> menu){
+
+    public AdapterMenuMakanan(Context c, ArrayList<MenuMakanan> menu){
         context = c;
-        menuMinuman = menu;
+        menuMakanans = menu;
     }
 
     @NonNull
     @Override
-    public myViewHolder2 onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new myViewHolder2(LayoutInflater.from(context)
-                .inflate(R.layout.recycler_menu_minuman,viewGroup,false));
+    public myViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        return new myViewHolder(LayoutInflater.from(context)
+                .inflate(R.layout.recycler_menu_makanan,viewGroup,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull myViewHolder2 holder, final int i) {
-        final String id = menuMinuman.get(i).getId();
-        holder.nmaminum.setText(menuMinuman.get(i).getNamaMinuman());
-        holder.hrgminum.setText(String.valueOf(menuMinuman.get(i).getHargaMinuman()));
+    public void onBindViewHolder(@NonNull final myViewHolder holder, final int i) {
+        final String id = menuMakanans.get(i).getId();
+        holder.Namamkn.setText(menuMakanans.get(i).getNamaMakanan());
+        holder.hargamkn.setText(String.valueOf(menuMakanans.get(i).getHargaMakanan()));
 
-        holder.editmin.setOnClickListener(new View.OnClickListener(){
+        holder.edit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 final Dialog myDialog = new Dialog(context);
                 TextView txtclose;
-                myDialog.setContentView(R.layout.popup_menuminuman);
+                myDialog.setContentView(R.layout.popup_menumakan);
                 txtclose =(TextView) myDialog.findViewById(R.id.cancel);
-                NamaMinum = (EditText) myDialog.findViewById(R.id.namaminuman);
-                HargaMinum = (EditText) myDialog.findViewById(R.id.hargaminuman);
-                updatemenu = (Button) myDialog.findViewById(R.id.addmenuminum);
+                namaMknan = (EditText) myDialog.findViewById(R.id.namamakanan);
+                hrgaMknan = (EditText) myDialog.findViewById(R.id.hargamakanan);
+                updatemenu = (Button) myDialog.findViewById(R.id.addmenumkn);
 
 
-                NamaMinum.setText(menuMinuman.get(i).getNamaMinuman());
-                HargaMinum.setText(String.valueOf(menuMinuman.get(i).getHargaMinuman()));
+                namaMknan.setText(menuMakanans.get(i).getNamaMakanan());
+                hrgaMknan.setText(String.valueOf(menuMakanans.get(i).getHargaMakanan()));
 
                 txtclose.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -75,10 +79,16 @@ public class AdapterMenuMinuman extends RecyclerView.Adapter<AdapterMenuMinuman.
                 updatemenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String nama = NamaMinum.getText().toString().trim();
-                        int harga = Integer.valueOf(HargaMinum.getText().toString().trim());
-                        updateMenuMinuman(id, nama, harga);
-                        myDialog.dismiss();
+                        String nama = namaMknan.getText().toString().trim();
+                        String cekharga = hrgaMknan.getText().toString().trim();
+                        if (!TextUtils.isEmpty(nama) || !TextUtils.isEmpty(cekharga)){
+                            Integer harga = Integer.valueOf(hrgaMknan.getText().toString().trim());
+                            updateMenuMakanan(id, nama, harga);
+                            myDialog.dismiss();
+                        }else {
+                            Toast.makeText(context.getApplicationContext(), "Harap Isi Semua Form", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 });
                 myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -86,7 +96,7 @@ public class AdapterMenuMinuman extends RecyclerView.Adapter<AdapterMenuMinuman.
             }
         });
 
-        holder.deletemin.setOnClickListener(new View.OnClickListener() {
+        holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(context); // Set the dialog title.
@@ -97,7 +107,7 @@ public class AdapterMenuMinuman extends RecyclerView.Adapter<AdapterMenuMinuman.
                         DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {// User cancelled the dialog.
                                 // You have to get the position like this, you can't hold a reference
-                                deleteMenuMinuman(id);
+                                deleteMenuMakanan(id);
                             }
                         });
 
@@ -115,37 +125,41 @@ public class AdapterMenuMinuman extends RecyclerView.Adapter<AdapterMenuMinuman.
 
     @Override
     public int getItemCount() {
-        return menuMinuman.size();
+        return menuMakanans.size();
     }
 
-    class myViewHolder2 extends RecyclerView.ViewHolder{
-        TextView nmaminum, hrgminum;
-        Button editmin, deletemin;
-        public myViewHolder2(View itemView){
+    class myViewHolder extends RecyclerView.ViewHolder{
+        TextView Namamkn, hargamkn;
+        Button edit, delete;
+        public myViewHolder(View itemView){
             super(itemView);
 
-            nmaminum = (TextView) itemView.findViewById(R.id.namaminrec);
-            hrgminum = (TextView) itemView.findViewById(R.id.hargaminrec);
-            editmin = (Button) itemView.findViewById(R.id.editminum);
-            deletemin = (Button) itemView.findViewById(R.id.delminum);
+            Namamkn = (TextView) itemView.findViewById(R.id.namamknan);
+            hargamkn = (TextView) itemView.findViewById(R.id.hargamknan);
+            edit = (Button) itemView.findViewById(R.id.editmkn);
+            delete = (Button) itemView.findViewById(R.id.delmkn);
         }
     }
 
-    private boolean updateMenuMinuman(String id, String nama, int harga){
-        DatabaseReference menu = FirebaseDatabase.getInstance().getReference("MenuMinuman").child(id);
+    private boolean updateMenuMakanan(String id, String nama, int harga){
+        DatabaseReference menu = FirebaseDatabase.getInstance().getReference("MenuMakanan").child(id);
 
-        MenuMinuman upmenu = new MenuMinuman(id, nama, harga);
+        MenuMakanan upmenu = new MenuMakanan(id, nama, harga);
         menu.setValue(upmenu);
         Toast.makeText(context.getApplicationContext(), "Menu Update", Toast.LENGTH_SHORT).show();
         return true;
     }
 
-    private boolean deleteMenuMinuman(String id){
-        DatabaseReference menu = FirebaseDatabase.getInstance().getReference("MenuMinuman").child(id);
+    private boolean deleteMenuMakanan(String id){
+        DatabaseReference menu = FirebaseDatabase.getInstance().getReference("MenuMakanan").child(id);
 
         menu.removeValue();
         Toast.makeText(context.getApplicationContext(), "Menu Deleted", Toast.LENGTH_SHORT).show();
         return true;
     }
+
+
+
+
 
 }
