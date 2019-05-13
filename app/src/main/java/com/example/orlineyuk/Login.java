@@ -24,7 +24,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private EditText email;
     private EditText pass;
     private TextView reg;
-    static String userEmail;
+    public static String userEmail;
 
     private FirebaseAuth firebaseAuth;
 
@@ -38,8 +38,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         if (firebaseAuth.getCurrentUser() != null){
             FirebaseUser user = firebaseAuth.getCurrentUser();
             userEmail = user.getEmail();
-            finish();
-            startActivity(new Intent(getApplicationContext(), MainMenu.class));
+            if (user.getEmail().equals("alfincawii@gmail.com")){
+                finish();
+                startActivity(new Intent(getApplicationContext(), MainMenuAdmin.class));
+            }else {
+                finish();
+                startActivity(new Intent(getApplicationContext(), MainMenu.class));
+            }
         }
 
 
@@ -77,7 +82,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             finish();
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             userEmail = user.getEmail();
-                            startActivity(new Intent(getApplicationContext(), MainMenu.class));
+                            if (user.getEmail().equals("alfincawii@gmail.com")){
+                                startActivity(new Intent(getApplicationContext(), MainMenuAdmin.class));
+                            }else {
+                                startActivity(new Intent(getApplicationContext(), MainMenu.class));
+                            }
+
                         }else {
                             Toast.makeText(Login.this, "Login Gagal", Toast.LENGTH_SHORT).show();
                         }

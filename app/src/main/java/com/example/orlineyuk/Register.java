@@ -65,6 +65,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         if(TextUtils.isEmpty(pass)){
             Toast.makeText(this, "Masukkan password", Toast.LENGTH_SHORT).show();
         }
+        if (pass.length() < 6){
+            Toast.makeText(this, "Password Harus Lebih Dari 6", Toast.LENGTH_SHORT).show();
+        }
 
         progressDialog.setMessage("Sedang Registrasi..");
         progressDialog.show();

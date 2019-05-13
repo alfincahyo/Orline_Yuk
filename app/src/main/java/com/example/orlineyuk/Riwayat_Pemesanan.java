@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.example.orlineyuk.Adapter.AdapterListPesanan;
+import com.example.orlineyuk.Adapter.AdapterRiwayatPemesanan;
 import com.example.orlineyuk.model.ModelPesanMakanan;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,21 +21,21 @@ import java.util.ArrayList;
 
 import static com.example.orlineyuk.Login.userEmail;
 
-public class StatusPemesanan extends AppCompatActivity {
+public class Riwayat_Pemesanan extends AppCompatActivity {
 
     DatabaseReference databaselist;
     LinearLayoutManager layoutManager;
 
     ArrayList<ModelPesanMakanan> pesanmkn;
     RecyclerView recyclerView;
-    AdapterListPesanan Adapter;
+    AdapterRiwayatPemesanan Adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_status_pemesanan);
+        setContentView(R.layout.activity_riwayat__pemesanan);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerlistpesanan);
+        recyclerView = (RecyclerView) findViewById(R.id.recylerriwayat);
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
@@ -57,22 +58,18 @@ public class StatusPemesanan extends AppCompatActivity {
                     String status = dataSnapshot1.child("statPesan").getValue(String.class);
                     String email = dataSnapshot1.child("email").getValue(String.class);
                     ModelPesanMakanan pesan = new ModelPesanMakanan(id, nama, jumlah, harga, status,email);
-                    if (pesan.getEmail().equals(userEmail) && (pesan.getStatPesan().equals("Sedang Mengantri")
-                            || pesan.getStatPesan().equals("Dalam Proses Pembuatan") || pesan.getStatPesan().equals("Pesanan Siap Diambil"))) {
+                    if (pesan.getEmail().equals(userEmail) && pesan.getStatPesan().equals("Transaksi Selesai")) {
                         pesanmkn.add(pesan);
                     }
                 }
-                Adapter = new AdapterListPesanan(StatusPemesanan.this, pesanmkn);
+                Adapter = new AdapterRiwayatPemesanan(Riwayat_Pemesanan.this, pesanmkn);
                 recyclerView.setAdapter(Adapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(StatusPemesanan.this, "Oops Something Wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(Riwayat_Pemesanan.this, "Oops Something Wrong", Toast.LENGTH_LONG).show();
             }
         });
     }
-
-
 }
-
